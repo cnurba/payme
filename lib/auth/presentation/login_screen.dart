@@ -31,45 +31,78 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     // You can access the authControllerProvider here if needed
     final authController = ref.watch(authControllerProvider);
+    final formKey = GlobalKey<FormState>();
 
-    authController.isLoggedIn
-        ? Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) {
-              return HomeScreen();
-            },
-          ),
-        )
-        : null; // Redirect to home if already logged in
+    authController.when(
+      initial: () {},
+      loading: () {},
+      authenticated: () {
+        // Navigate to HomeScreen if authenticated
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      },
+      unauthenticated: () {},
+    );
 
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Login Screen'),
-            TextFormField(
-              controller: emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            TextFormField(
-              controller: passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
+      body: Form(
+        key: formKey,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          primary: true,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              //const Text('Login Screen'),
+              TextFormField(
+                controller: emailController,
+                decoration: const InputDecoration(labelText: 'Login'),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Пожалуюста, введите адрес электронной почты';
+                  }else if (value.length < 4) {
+                    return 'Пожалуйста, введите не менее 4 символов';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: passwordController,
+                decoration: const InputDecoration(labelText: 'Password'),
+                obscureText: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Пожалуйста, введите пароль';
+                  } else if (value.length < 3) {
+                    return 'Пожалуйста, введите не менее 6 символов';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50), // Full width button
+                ),
+                onPressed: () {
+                  if(formKey.currentState!.validate()){
+                    // If the form is valid, proceed with login
+                    ref.read(authControllerProvider.notifier).login(
+                      emailController.text,
+                      passwordController.text,
+                    );
+                  }
 
-            ElevatedButton(
-              onPressed: () {
-                ref
-                    .read(authControllerProvider.notifier)
-                    .login(emailController.text, passwordController.text);
-              },
-              child: const Text('Login'),
-            ),
-          ],
+                },
+                child: const Text('Login'),
+              ),
+            ],
+          ),
         ),
       ),
     );

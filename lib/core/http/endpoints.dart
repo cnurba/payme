@@ -1,0 +1,44 @@
+
+import 'package:payme/core/http/server_address.dart';
+
+final String _baseUrl = ServerAddress().baseUrl;
+
+/// Defines endpoints for authentication.
+class _Auth {
+   String get login => "$_baseUrl/amanat/hs/mobile/auth/GetToken";
+   String get refresh => "$_baseUrl/auth/refresh-token";
+   String get currentUser => "$_baseUrl/amanat/hs/mobile/user/currentUser";
+}
+
+
+class _Clients {
+  String get clients => "$_baseUrl/clients/clients/";
+
+}
+
+class _Brand {
+  String get brands => "$_baseUrl/amanat/hs/mobile/brands";
+
+}
+
+class _Task {
+  String get myTasks => "$_baseUrl/amanat/hs/mobile/task";
+
+}
+
+class _Product {
+  String get products => "$_baseUrl/amanat/hs/mobile/products";
+
+}
+
+
+/// Defines endpoints for connection to server.
+class Endpoints {
+  static get client => _Clients();
+  static get auth => _Auth();
+  static get brand => _Brand();
+  static get product => _Product();
+  static get image => "$_baseUrl/Photos/";
+  static get task => _Task();
+
+}

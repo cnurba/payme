@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:payme/app/brands/presentation/brands_menu_widget.dart';
+import 'package:payme/app/tasks/presentation/task_home_widget.dart';
+
+import '../auth/application/current_user_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -6,28 +11,19 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Welcome to the Home Screen!'),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/profile');
-              },
-              child: const Text('Go to Profile'),
-            ),
-          ],
+      appBar: AppBar(
+        title: Consumer(
+          builder: (context, ref, child) {
+            final user = ref.watch(userProvider);
+            return user.when(
+              data: (v) => Text(v.name),
+              error: (e, s) => SizedBox.shrink(),
+              loading: () => SizedBox.shrink(),
+            );
+          },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/settings');
-        },
-        child: const Icon(Icons.settings),
-        tooltip: 'Settings',
-      ),
+      body: ListView(children: [TaskHomeWidget(), BrandsHomeWidget()]),
     );
   }
 }
