@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:payme/app/a_home/home_screen.dart';
 import 'package:payme/auth/application/auth_controller.dart';
 import 'package:payme/auth/application/auth_provider.dart';
+import 'package:payme/core/presentation/buttons/app_elevated_button.dart';
+
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -37,7 +39,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
@@ -45,7 +47,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Icon(Icons.lock_outline, size: 64, color: Colors.blueAccent),
+              Icon(Icons.lock_outline, size: 64, color: Theme.of(context).colorScheme.primary),
               const SizedBox(height: 16),
               Text(
                 'Добро пожаловать!',
@@ -54,7 +56,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               const SizedBox(height: 8),
               Text(
                 'Войдите в свой аккаунт',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.grey[600]),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Theme.of(context).colorScheme.secondary),
               ),
               const SizedBox(height: 32),
               Form(
@@ -65,10 +67,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       controller: emailController,
                       decoration: InputDecoration(
                         labelText: 'Login',
-                        prefixIcon: const Icon(Icons.email_outlined),
+                        prefixIcon: Icon(Icons.email_outlined, color: Theme.of(context).colorScheme.primary),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                         filled: true,
-                        fillColor: Colors.grey[100],
+                        fillColor: Theme.of(context).colorScheme.surface,
                       ),
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
@@ -85,10 +87,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       controller: passwordController,
                       decoration: InputDecoration(
                         labelText: 'Пароль',
-                        prefixIcon: const Icon(Icons.lock_outline),
+                        prefixIcon: Icon(Icons.lock_outline, color: Theme.of(context).colorScheme.primary),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                         filled: true,
-                        fillColor: Colors.grey[100],
+                        fillColor: Theme.of(context).colorScheme.surface,
                       ),
                       obscureText: true,
                       validator: (value) {
@@ -101,18 +103,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       },
                     ),
                     const SizedBox(height: 24),
+                    // Используем AppElevatedButton для единого стиля
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: authController is AuthLoading
                           ? const Center(child: CircularProgressIndicator())
-                          : ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blueAccent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
+                          : AppElevatedButton(
                               onPressed: () {
                                 if (formKey.currentState!.validate()) {
                                   ref.read(authControllerProvider.notifier).login(
@@ -121,10 +118,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   );
                                 }
                               },
-                              child: const Text(
-                                'Войти',
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
+                              title: 'Войти',
                             ),
                     ),
                   ],

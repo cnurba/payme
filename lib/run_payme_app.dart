@@ -7,6 +7,7 @@ import 'package:payme/auth/presentation/login_screen.dart';
 import 'package:payme/auth/presentation/splash_screen.dart';
 import 'package:payme/core/presentation/global/restart_widget.dart';
 import 'package:payme/core/theme/app_theme.dart';
+import 'package:payme/core/theme/theme_provider.dart';
 
 import 'app/units/presentation/unit_screen.dart';
 
@@ -23,11 +24,12 @@ class _PayMeAppState extends ConsumerState<PayMeApp> {
   }
   @override
   Widget build(BuildContext context) {
+    final themeMode = ref.watch(themeNotifierProvider);
     return RestartWidget(
       child: MaterialApp(
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.light, // Change to ThemeMode.dark for dark mode
+        themeMode: themeMode,
         home: Consumer(
           // Using Consumer to access the context and theme
           builder: (context, ref, child) {
