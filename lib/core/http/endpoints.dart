@@ -32,11 +32,18 @@ class _Product {
 }
 
 
+class _Unit {
+  String get units => "$_baseUrl/amanat/hs/mobile/units";
+
+}
+
+
 /// Defines endpoints for connection to server.
 class Endpoints {
   static get client => _Clients();
   static get auth => _Auth();
   static get brand => _Brand();
+  static get unit => _Unit();
   static get product => _Product();
   static get image => "$_baseUrl/Photos/";
   static get task => _Task();

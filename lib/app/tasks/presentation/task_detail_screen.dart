@@ -8,8 +8,9 @@ import 'package:payme/core/presentation/messages/show_center_message.dart';
 
 class TaskDetailScreen extends ConsumerStatefulWidget {
   final Task task;
+  final VoidCallback? onDone;
 
-  const TaskDetailScreen({super.key, required this.task});
+  const TaskDetailScreen( {super.key, required this.task,this.onDone});
 
   @override
   ConsumerState<TaskDetailScreen> createState() => _TaskActionScreenState();
@@ -44,6 +45,7 @@ class _TaskActionScreenState extends ConsumerState<TaskDetailScreen>
     if (result1) {
       showSuccessMessage(context, 'Задача успешно cогласована');
       Navigator.of(context).pop(true); // Закрыть экран после успешного выполнения
+      widget.onDone?.call(); // Вызвать коллбэк, если он задан
       return;
     }
 
@@ -66,6 +68,7 @@ class _TaskActionScreenState extends ConsumerState<TaskDetailScreen>
     if (result1) {
       showSuccessMessage(context, 'Задача успешно отклонена');
       Navigator.of(context).pop(true); // Закрыть экран после успешного выполнения
+      widget.onDone?.call();
       return;
     }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:payme/app/home_screen.dart';
+import 'package:payme/app/a_home/home_screen.dart';
 import 'package:payme/auth/application/auth_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {

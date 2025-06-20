@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:payme/app/brands/presentation/brands_menu_widget.dart';
 import 'package:payme/app/tasks/presentation/task_home_widget.dart';
 
-import '../auth/application/current_user_provider.dart';
+import '../../auth/application/current_user_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

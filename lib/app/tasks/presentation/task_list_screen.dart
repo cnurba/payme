@@ -3,10 +3,10 @@ import 'package:payme/app/tasks/domain/models/task.dart';
 import 'package:payme/app/tasks/presentation/task_card.dart';
 
 class TaskListScreen extends StatelessWidget {
-  const TaskListScreen({super.key, required this.tasks,this.onTap});
+  const TaskListScreen({super.key, required this.tasks,required this.onTap});
 
   final List<Task> tasks;
-  final VoidCallback? onTap;
+  final Function(Task) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,9 @@ class TaskListScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           final task = tasks[index];
           return GestureDetector(
-              onTap: onTap,
+              onTap: (){
+                onTap(task);
+              },
               child: TaskCard(task: task));
         },
       ),

@@ -8,17 +8,12 @@ class TaskCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 8,
-            offset: Offset(0, 4),
-          )
+          BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4)),
         ],
       ),
       child: Row(
@@ -30,27 +25,21 @@ class TaskCard extends StatelessWidget {
               color: Color(0xFFBBA7F2), // сиреневый круг
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.location_on, color: Colors.white, size: 20),
+            child: const Icon(Icons.task, color: Colors.white, size: 20),
           ),
           const SizedBox(width: 16),
           // Текст
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children:  [
+            children: [
               Text(
                 task.name,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               SizedBox(height: 4),
               Text(
                 '${task.object} / ${task.blok} / ${task.floor}}',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 13,
-                ),
+                style: TextStyle(color: Colors.grey, fontSize: 13),
               ),
             ],
           ),
