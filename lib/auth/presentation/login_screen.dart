@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:payme/app/a_home/home_screen.dart';
+import 'package:payme/auth/application/auth_controller.dart';
 import 'package:payme/auth/application/auth_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -11,14 +12,9 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -29,77 +25,110 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // You can access the authControllerProvider here if needed
     final authController = ref.watch(authControllerProvider);
-    final formKey = GlobalKey<FormState>();
 
-    authController.when(
-      initial: () {},
-      loading: () {},
-      authenticated: () {
-        // Navigate to HomeScreen if authenticated
+    ref.listen(authControllerProvider, (previous, next) {
+      if (next is AuthAuthenticated) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
-      },
-      unauthenticated: () {},
-    );
+      }
+    });
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: Form(
-        key: formKey,
+      backgroundColor: Colors.white,
+      body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          primary: true,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              //const Text('Login Screen'),
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(labelText: 'Login'),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Пожалуюста, введите адрес электронной почты';
-                  }else if (value.length < 4) {
-                    return 'Пожалуйста, введите не менее 4 символов';
-                  }
-                  return null;
-                },
+              const Icon(Icons.lock_outline, size: 64, color: Colors.blueAccent),
+              const SizedBox(height: 16),
+              Text(
+                'Добро пожаловать!',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
               ),
-              TextFormField(
-                controller: passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Пожалуйста, введите пароль';
-                  } else if (value.length < 3) {
-                    return 'Пожалуйста, введите не менее 6 символов';
-                  }
-                  return null;
-                },
+              const SizedBox(height: 8),
+              Text(
+                'Войдите в свой аккаунт',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.grey[600]),
               ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50), // Full width button
+              const SizedBox(height: 32),
+              Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        labelText: 'Login',
+                        prefixIcon: const Icon(Icons.email_outlined),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                        filled: true,
+                        fillColor: Colors.grey[100],
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Пожалуйста, введите адрес электронной почты';
+                        } else if (value.length < 4) {
+                          return 'Пожалуйста, введите не менее 4 символов';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                        labelText: 'Пароль',
+                        prefixIcon: const Icon(Icons.lock_outline),
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                        filled: true,
+                        fillColor: Colors.grey[100],
+                      ),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Пожалуйста, введите пароль';
+                        } else if (value.length <3) {
+                          return 'Пожалуйста, введите не менее 3 символов';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: authController is AuthLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blueAccent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              onPressed: () {
+                                if (formKey.currentState!.validate()) {
+                                  ref.read(authControllerProvider.notifier).login(
+                                    emailController.text.trim(),
+                                    passwordController.text.trim(),
+                                  );
+                                }
+                              },
+                              child: const Text(
+                                'Войти',
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                    ),
+                  ],
                 ),
-                onPressed: () {
-                  if(formKey.currentState!.validate()){
-                    // If the form is valid, proceed with login
-                    ref.read(authControllerProvider.notifier).login(
-                      emailController.text,
-                      passwordController.text,
-                    );
-                  }
-
-                },
-                child: const Text('Login'),
               ),
             ],
           ),

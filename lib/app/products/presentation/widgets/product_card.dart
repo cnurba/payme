@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:payme/app/products/domain/models/product.dart';
+import 'package:payme/core/extensions/numder_extension.dart';
 
 class ProductCard extends StatefulWidget {
   final Product product;
-  final Function(int quantity)? onQuantityChanged;
+  final Function(int quantity, bool)? onQuantityChanged;
 
   const ProductCard({super.key, required this.product, this.onQuantityChanged});
 
@@ -13,13 +15,19 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   int quantity = 0;
+  bool isCounter = true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void incrementQuantity() {
     setState(() {
       quantity++;
     });
     if (widget.onQuantityChanged != null) {
-      widget.onQuantityChanged!(quantity);
+      widget.onQuantityChanged!(quantity, isCounter);
     }
   }
 
@@ -27,9 +35,10 @@ class _ProductCardState extends State<ProductCard> {
     if (quantity > 0) {
       setState(() {
         quantity--;
+
       });
       if (widget.onQuantityChanged != null) {
-        widget.onQuantityChanged!(quantity);
+        widget.onQuantityChanged!(quantity, isCounter);
       }
     }
   }
@@ -72,30 +81,107 @@ class _ProductCardState extends State<ProductCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Остаток: ${widget.product.stock} ${widget.product.unit}',
+                      'Ост: ${widget.product.stock.formatAsNumber()} ${widget.product.unit}',
                       style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
-                   
-                    CircleButton(
-                      isAddButton: false,
-                      isVisible: quantity > 0,
-                      onTap: decrementQuantity,
-                    ),
-                    Visibility(
-                      visible: quantity > 0,
-                      child: Text(
-                        '$quantity',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
+
+                    Row(
+                      children: [
+                        CircleButton(
+                          isAddButton: false,
+                          isVisible: quantity > 0,
+                          onTap: decrementQuantity,
                         ),
-                      ),
+
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text('Введите количество'),
+                                  content: SizedBox(
+                                    width: MediaQuery.of(context).size.width * 0.2,
+                                    child: TextField(
+                                      keyboardType: TextInputType.number,
+                                      textAlign: TextAlign.right,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly,
+                                      ],
+                                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(8),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        filled: true,
+                                        fillColor: Colors.grey[200],
+                                        contentPadding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 4,
+                                        ),
+                                      ),
+                                      onChanged: (value) {
+                                        int newQuantity = int.tryParse(value) ?? 0;
+                                        setState(() {
+                                          quantity = newQuantity;
+                                        });
+                                        if (widget.onQuantityChanged != null) {
+                                          widget.onQuantityChanged!(quantity, false);
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.of(context).pop(),
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 8),
+                            constraints: const BoxConstraints(
+                              minWidth: 80,
+                              maxWidth: 100,
+                              maxHeight: 40,
+                              minHeight: 40,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Visibility(
+                              visible: quantity > 0,
+                              child: Text(
+                                '${quantity}',
+                                textAlign: TextAlign.right,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        CircleButton(onTap: incrementQuantity),
+                      ],
                     ),
-                    CircleButton(onTap: incrementQuantity),
                   ],
                 ),
               ],

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:payme/app/units/application/unit_provider.dart';
 import 'package:payme/app/units/domain/models/unit_model.dart';
+import 'package:payme/core/extensions/route_extension.dart';
 import 'package:payme/core/failure/app_result.dart';
 
 class UnitScreen extends ConsumerWidget {
   const UnitScreen({super.key, this.onUnitSelected});
+
   final Function(UnitModel)? onUnitSelected;
 
   @override
@@ -39,7 +41,10 @@ class UnitScreen extends ConsumerWidget {
                   title: Text(units[index].name),
 
                   onTap: () {
-                    onUnitSelected?.call(units[index]);
+                    if (onUnitSelected != null) {
+                      onUnitSelected?.call(units[index]);
+                      context.pop(context);
+                    }
                   },
                 );
               },

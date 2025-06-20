@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:payme/app/orders/application/new_orders/new_order_provider.dart';
 import 'package:payme/app/orders/application/orders/orders_provider.dart';
+import 'package:payme/app/orders/presentation/order_model_screen.dart';
 import 'package:payme/app/orders/presentation/widgets/order_item_card.dart';
+import 'package:payme/core/extensions/route_extension.dart';
 
 class OrdersScreen extends ConsumerWidget {
   const OrdersScreen({super.key});
@@ -42,7 +45,22 @@ class OrdersScreen extends ConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          if (sProducts.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Корзина пуста!'),
+              ),
+            );
+            return;
+          }
+          ref.read(newOrderProvider.notifier).addOrderItem(sProducts);
+          Navigator.pop(context);
+
+          context.push(OrderModelScreen());
+
+
+        },
         label: const Text('Оформить заказ'),
         icon: const Icon(Icons.check),
       ),
@@ -56,7 +74,7 @@ class OrdersScreen extends ConsumerWidget {
             onQuantityChanged: (quantity) {
               ref
                   .read(orderItemProvider.notifier)
-                  .addProduct(sProducts.elementAt(index).product, quantity);
+                  .addProduct(sProducts.elementAt(index).product, quantity, true);
             },
             onDelete: () {
               ref

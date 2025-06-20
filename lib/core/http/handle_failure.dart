@@ -22,12 +22,13 @@ Future<T> handleFailure<T>(Future<T> Function() callback) async {
       return ApiResultFailureClient(message: e.response?.data) as T;
     }
     log("${e.message}: ${e.type}", level: 2, name: "DioException");
-    return ApiResultWithData(data: e) as T;
+    return ApiResultFailureUnExpected() as T;
   } on PlatformException catch (e) {
     log("${e.message}: ${e.code}", level: 2, name: "PlatformException");
-    return ApiResultWithData(data: e) as T;
+    return ApiResultFailureUnExpected() as T;
   } catch (e) {
     log(e.toString(), level: 2, name: "Exception");
-    return ApiResultWithData(data: e) as T;
+    return ApiResultFailureUnExpected() as T;
   }
 }
+

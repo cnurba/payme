@@ -10,6 +10,13 @@ class Expanse extends Equatable {
     return Expanse(uuid: json['uuid'] ?? '', name: json['name'] ?? '');
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'uuid': uuid,
+      'name': name,
+    };
+  }
+
   @override
   List<Object?> get props => [uuid, name];
 }

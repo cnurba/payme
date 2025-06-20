@@ -31,6 +31,17 @@ class OrderItem extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'product': product.toJson(),
+      'count': count,
+      'expense':expense==null?{
+        "name": "",
+        "uuid": "",
+      }:expense?.toJson(),
+    };
+  }
+
   @override
   List<Object?> get props => [product, count, expense];
 }

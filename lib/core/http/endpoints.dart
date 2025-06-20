@@ -37,6 +37,22 @@ class _Unit {
 
 }
 
+class _Floor {
+  String get floors => "$_baseUrl/amanat/hs/mobile/floors";
+
+}
+
+class _Object {
+  String get objects => "$_baseUrl/amanat/hs/mobile/objects";
+
+}
+
+class _Orders {
+  String get orders => "$_baseUrl/amanat/hs/mobile/orders";
+
+}
+
+
 
 /// Defines endpoints for connection to server.
 class Endpoints {
@@ -47,5 +63,8 @@ class Endpoints {
   static get product => _Product();
   static get image => "$_baseUrl/Photos/";
   static get task => _Task();
+  static get floor => _Floor();
+  static get object => _Object();
+  static get order => _Orders();
 
 }
