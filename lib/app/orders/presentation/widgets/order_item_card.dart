@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:payme/app/orders/domain/models/order_item.dart';
+import 'package:payme/app/orders/domain/models/order/order_item.dart';
 
 class OrderItemCard extends StatefulWidget {
   final OrderItem orderItem;

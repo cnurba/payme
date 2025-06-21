@@ -70,4 +70,21 @@ class ProductRepository implements IProductRepository {
       return ApiResultWithData<Product>(data: product);
     });
   }
+
+  @override
+  Future<ApiResult> getProductsBySearchText(String searchText) async{
+    return await handleFailure<ApiResult>(() async {
+      log("START PRODUCT REQUEST $searchText");
+      final responseData = await _dio.get(
+        Endpoints.product.products,
+        queryParameters: {"searchText": searchText},
+      );
+      final products =
+      (responseData.data as List)
+          .map((clients) => Product.fromJson(clients))
+          .toList();
+      log("FINISH PRODUCT length  ${products.length}");
+      return ApiResultWithData<List<Product>>(data: products);
+    });
+  }
 }

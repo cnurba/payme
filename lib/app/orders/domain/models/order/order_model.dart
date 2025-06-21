@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:payme/app/objects/domain/models/object_model.dart';
-import 'package:payme/app/orders/domain/models/order_item.dart';
+import 'package:payme/app/orders/domain/models/order/order_item.dart';
 import 'package:payme/core/extensions/date_extensions.dart';
 
 class OrderModel extends Equatable {

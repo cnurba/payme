@@ -32,6 +32,7 @@ final newProductProvider = FutureProvider.autoDispose
       );
 
       if (result is ApiResultWithData) {
+
         ref.refresh(productListByBrandIdFutureProvider(params.brandUuid));
         return result.data as Product;
       } else {

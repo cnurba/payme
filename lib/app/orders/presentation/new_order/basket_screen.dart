@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:payme/app/orders/application/new_orders/new_order_provider.dart';
 import 'package:payme/app/orders/application/orders/orders_provider.dart';
-import 'package:payme/app/orders/presentation/order_model_screen.dart';
+import 'package:payme/app/orders/presentation/new_order/basket_header_screen.dart';
 import 'package:payme/app/orders/presentation/widgets/order_item_card.dart';
 import 'package:payme/core/extensions/route_extension.dart';
 
-class OrdersScreen extends ConsumerWidget {
-  const OrdersScreen({super.key});
+class BasketScreen extends ConsumerWidget {
+  const BasketScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -57,7 +57,7 @@ class OrdersScreen extends ConsumerWidget {
           ref.read(newOrderProvider.notifier).addOrderItem(sProducts);
           Navigator.pop(context);
 
-          context.push(OrderModelScreen());
+          context.push(BasketHeaderScreen());
 
 
         },

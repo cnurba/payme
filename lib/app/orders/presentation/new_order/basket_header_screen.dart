@@ -12,16 +12,16 @@ import 'package:payme/core/presentation/messages/messenger.dart';
 import 'package:payme/core/presentation/messages/show_center_message.dart';
 import 'package:payme/core/presentation/textforms/date_picker_text_field.dart';
 
-import '../../objects/presentation/block_screen.dart';
+import '../../../objects/presentation/block_screen.dart';
 
-class OrderModelScreen extends ConsumerStatefulWidget {
-  const OrderModelScreen({super.key});
+class BasketHeaderScreen extends ConsumerStatefulWidget {
+  const BasketHeaderScreen({super.key});
 
   @override
-  ConsumerState<OrderModelScreen> createState() => _OrderModelScreenState();
+  ConsumerState<BasketHeaderScreen> createState() => _BasketHeaderScreenState();
 }
 
-class _OrderModelScreenState extends ConsumerState<OrderModelScreen> {
+class _BasketHeaderScreenState extends ConsumerState<BasketHeaderScreen> {
   final TextEditingController _commentController = TextEditingController();
   final TextEditingController _objectController = TextEditingController();
   final TextEditingController _blockController = TextEditingController();

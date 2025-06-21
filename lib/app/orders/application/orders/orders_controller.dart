@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:payme/app/orders/domain/models/order_item.dart';
+import 'package:payme/app/orders/domain/models/order/order_item.dart';
 import 'package:payme/app/products/domain/models/product.dart';
 
 class OrdersController extends StateNotifier<List<OrderItem>> {

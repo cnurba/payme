@@ -9,6 +9,8 @@ import 'package:payme/app/objects/domain/repositories/i_object_repository.dart';
 import 'package:payme/app/objects/infrastructure/repositories/object_repository.dart';
 import 'package:payme/app/orders/domain/repo/i_order_repository.dart';
 import 'package:payme/app/orders/infrastructure/order_repository.dart';
+import 'package:payme/app/products/domain/repositories/i_product_repository.dart';
+import 'package:payme/app/products/infrastructure/repositories/product_repository.dart';
 import 'package:payme/auth/domain/repositories/i_auth_repository.dart';
 import 'package:payme/auth/domain/repositories/i_user_model_cache.dart';
 import 'package:payme/auth/infrastucture/repositories/auth_repository.dart';
@@ -36,5 +38,6 @@ void initDependencies() {
   getIt.registerLazySingleton<IOrderRepository>(() => OrderRepository(getIt()));
   getIt.registerLazySingleton<IFloorRepository>(() => FloorRepository(getIt()));
   getIt.registerLazySingleton<IObjectRepository>(() => ObjectRepository(getIt()));
+  getIt.registerLazySingleton<IProductRepository>(() => ProductRepository(getIt()));
 
 }

@@ -2,8 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:payme/app/floors/domain/models/floor_model.dart';
 import 'package:payme/app/objects/domain/models/block_model.dart';
 import 'package:payme/app/objects/domain/models/object_model.dart';
-import 'package:payme/app/orders/domain/models/order_item.dart';
-import 'package:payme/app/orders/domain/models/order_model.dart';
+import 'package:payme/app/orders/domain/models/order/order_item.dart';
+import 'package:payme/app/orders/domain/models/order/order_model.dart';
 import 'package:payme/app/orders/domain/repo/i_order_repository.dart';
 
 class NewOrderController extends StateNotifier<OrderModel> {
