@@ -62,4 +62,22 @@ class OrderRepository implements IOrderRepository {
       return [];
     }
   }
+
+  @override
+  Future<List<OrderDoc>> getAllOrderDocs() async{
+    try {
+      log("START ORDER DOCS History REQUEST");
+      final responseData = await _dio.get(Endpoints.order.orders, queryParameters: {
+        'all': true,
+      });
+      final List<OrderDoc> orderDocs = (responseData.data as List)
+          .map((doc) => OrderDoc.fromJson(doc))
+          .toList();
+      log("FINISH ORDER DOCS History ${responseData.data}");
+      return orderDocs;
+    } catch (e) {
+      log("Error fetching objects: $e");
+      return [];
+    }
+  }
 }

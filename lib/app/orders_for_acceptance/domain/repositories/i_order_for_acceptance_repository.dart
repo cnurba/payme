@@ -1,11 +1,11 @@
 import 'package:payme/app/orders/domain/models/order/order_model.dart';
 import 'package:payme/app/orders/domain/models/order_doc/order_doc.dart';
 import 'package:payme/app/orders/domain/models/order_doc/order_doc_history.dart';
+import 'package:payme/app/orders_for_acceptance/domain/models/order_for_acceptance.dart';
 
-abstract class IOrderRepository {
+abstract class IOrderForAcceptanceRepository {
   /// Fetches a list of units.
-  Future<bool> addOrder(OrderModel order);
-  Future<List<OrderDoc>> getMyOrderDocs();
-  Future<List<OrderDoc>> getAllOrderDocs();
-  Future<List<OrderDocHistory>> getOrderDocHistory(String uuid);
+  Future<List<OrderForAcceptance>> getAllForAcceptance();
+
+  Future<bool> createAcceptance(OrderForAcceptance order);
 }

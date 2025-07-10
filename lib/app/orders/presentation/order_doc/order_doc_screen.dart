@@ -4,16 +4,17 @@ import 'package:payme/app/orders/presentation/order_doc/order_doc_history_screen
 import 'package:payme/core/extensions/route_extension.dart';
 
 class OrderDocScreen extends StatelessWidget {
-  const OrderDocScreen({super.key, required this.orderDocs});
+  const OrderDocScreen({super.key, required this.orderDocs, this.isAll = false});
 
   final List<OrderDoc> orderDocs;
+  final bool isAll;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
     return Scaffold(
-      appBar: AppBar(title: const Text('Мои заявки')),
+      appBar: AppBar(title: Text(isAll?"Все заявки":'Мои заявки')),
       body: ListView.builder(
         physics: BouncingScrollPhysics(),
         itemCount: orderDocs.length,

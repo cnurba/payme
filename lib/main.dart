@@ -10,10 +10,13 @@ void main() async {
   await _init();
   getIt<Dio>()
     ..options = BaseOptions(
-      connectTimeout: const Duration(milliseconds: 60 * 1000),
-      receiveTimeout: const Duration(milliseconds: 3000),
+      connectTimeout: const Duration(milliseconds: 7000),
+      receiveTimeout: const Duration(milliseconds: 6000),
+      sendTimeout: const Duration(milliseconds: 6000),
+
     )
     ..interceptors.add(getIt<DioInterceptor>());
+
   runApp(ProviderScope(child: const PayMeApp()));
 }
 

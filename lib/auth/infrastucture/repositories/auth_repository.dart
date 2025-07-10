@@ -33,6 +33,7 @@ class AuthRepository implements IAuthRepository {
         options: Options(headers:headers),
       );
       log("FINISH LOGIN ${responseData.data.toString()}");
+      await _secureStorage.clear();
       await _secureStorage.save(Token.fromMap(responseData.data));
       return ApiResultWithData(data: Token.fromMap(responseData.data));
     });
@@ -56,7 +57,10 @@ class AuthRepository implements IAuthRepository {
   Future<ApiResult> getCurrentUser() async{
     return await handleFailure<ApiResult>(() async {
       log("GET CURRENT USER START}");
-      final responseData = await _dio.get(Endpoints.auth.currentUser);
+      final token = await _secureStorage.read();
+      final responseData = await _dio.get(Endpoints.auth.currentUser, queryParameters: {
+        'Authorization': 'Bearer ${token!.access}'
+      });
       log("FINISH CURRENT USER ${responseData.data.toString()}");
       final user = UserModel.fromJson(responseData.data);
       return ApiResultWithData<UserModel>(data: user);

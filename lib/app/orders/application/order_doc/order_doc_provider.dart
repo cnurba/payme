@@ -19,3 +19,12 @@ final orderDocProvider = FutureProvider.autoDispose<List<OrderDoc>>((
   final result = await _repo.getMyOrderDocs();
   return result;
 });
+
+
+final orderDocAllProvider = FutureProvider.autoDispose<List<OrderDoc>>((
+    ref,
+    ) async {
+  final _repo = ref.watch(orderRepositoryProvider);
+  final result = await _repo.getAllOrderDocs();
+  return result;
+});

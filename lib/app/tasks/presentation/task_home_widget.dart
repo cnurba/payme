@@ -10,6 +10,7 @@ import 'package:payme/core/presentation/messages/show_center_message.dart';
 
 class TaskHomeWidget extends ConsumerWidget {
   const TaskHomeWidget({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final resultAsync = ref.watch(myTaskFutureProvider);
@@ -26,7 +27,13 @@ class TaskHomeWidget extends ConsumerWidget {
             count: tasks.length,
             onTap: () {
               if (tasks.isEmpty) {
-                showCenteredErrorMessage(context, "Нет задач для отображения");
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Нет задач для отображения"),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+                //showCenteredErrorMessage(context, "Нет задач для отображения");
                 return;
               }
               if (tasks.length == 1) {

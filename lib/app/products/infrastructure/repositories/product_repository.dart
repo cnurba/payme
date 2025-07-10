@@ -63,9 +63,7 @@ class ProductRepository implements IProductRepository {
           'articul': '',
         },
       );
-
       final Product product = Product.fromJson(responseData.data);
-
       log("FINISH NEW PRODUCT length");
       return ApiResultWithData<Product>(data: product);
     });
