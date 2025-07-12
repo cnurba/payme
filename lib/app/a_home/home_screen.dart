@@ -16,6 +16,7 @@ import 'package:payme/core/extensions/route_extension.dart';
 import 'package:payme/core/theme/theme_provider.dart';
 
 import '../../auth/application/current_user_provider.dart';
+import '../reports/presentation/report_home_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -83,30 +84,28 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Consumer(builder: (context, ref, child) {
-        return RefreshIndicator(
-          onRefresh: () async{
-            ref.refresh(orderToSupplierProvider);
-            ref.refresh(orderAcceptanceProvider);
-          },
-          child: ListView(
-            physics: const BouncingScrollPhysics(),
-            children: [
-              BrandsHomeWidget(),
-              TaskHomeWidget(),
-              OrderDocHomeWidget(),
-
-              OrderForAcceptanceHomeWidget(),
-              OrderToSupplierHomeWidget(),
-              OrderDocAllHomeWidget(),
-
-            ],
-          ),
-        );
-      },)
-
-
-
+      body: Consumer(
+        builder: (context, ref, child) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              ref.refresh(orderToSupplierProvider);
+              ref.refresh(orderAcceptanceProvider);
+            },
+            child: ListView(
+              physics: const BouncingScrollPhysics(),
+              children: [
+                BrandsHomeWidget(),
+                TaskHomeWidget(),
+                OrderDocHomeWidget(),
+                OrderForAcceptanceHomeWidget(),
+                OrderToSupplierHomeWidget(),
+                OrderDocAllHomeWidget(),
+                ReportHomeWidget(),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

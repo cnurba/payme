@@ -47,6 +47,10 @@ class _Orders {
   String get supplier => "$_baseUrl/amanat/hs/mobile/orderToSupplier";
 }
 
+class _Reports {
+  String get reports => "$_baseUrl/amanat/hs/mobile/reports";
+}
+
 /// Defines endpoints for connection to server.
 class Endpoints {
   static get client => _Clients();
@@ -68,4 +72,5 @@ class Endpoints {
   static get object => _Object();
 
   static get order => _Orders();
+  static get report => _Reports();
 }

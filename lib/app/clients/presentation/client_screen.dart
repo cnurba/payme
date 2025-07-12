@@ -8,7 +8,6 @@ import 'package:payme/core/failure/app_result.dart';
 // Провайдер для хранения текущего поискового запроса
 final searchQueryProvider = StateProvider<String>((ref) => '');
 
-
 class ClientScreen extends ConsumerStatefulWidget {
   const ClientScreen({super.key, this.onSelected});
   final Function(ClientModel)? onSelected;

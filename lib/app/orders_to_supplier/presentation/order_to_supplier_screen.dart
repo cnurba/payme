@@ -4,6 +4,8 @@ import 'package:payme/app/orders_to_supplier/application/order_to_supplier_provi
 import 'package:payme/app/orders_to_supplier/domain/models/order_to_supplier.dart';
 import 'package:payme/app/orders_to_supplier/presentation/widgets/order_to_supplier_basket_screen.dart';
 import 'package:payme/app/orders_to_supplier/presentation/widgets/order_to_supplier_card.dart';
+import 'package:payme/app/reports/presentation/report_menu_screen.dart';
+import 'package:payme/core/extensions/route_extension.dart';
 import '../application/orders_to_supplier/orders_to_supplier_provider.dart';
 import 'widgets/order_to_supplier_list_tile.dart';
 
@@ -29,7 +31,15 @@ class _OrderToSupplierScreenState extends State<OrderToSupplierScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text("Оформление заказов")),
+      appBar: AppBar(title: Text("Оформление заказов"),
+      actions: [
+          IconButton(
+            icon: Icon(Icons.repeat_one_rounded),
+            onPressed: () {
+              context.push(ReportMenuScreen());
+            },
+          ),
+        ],),
       body: Stack(
         children: [
           ListView.separated(
